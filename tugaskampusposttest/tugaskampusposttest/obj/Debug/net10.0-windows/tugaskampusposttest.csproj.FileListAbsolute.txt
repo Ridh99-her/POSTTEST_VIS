@@ -1,0 +1,16 @@
+C:\Users\user\source\repos\tugaskampusposttest\tugaskampusposttest\bin\Debug\net10.0-windows\tugaskampusposttest.exe
+C:\Users\user\source\repos\tugaskampusposttest\tugaskampusposttest\bin\Debug\net10.0-windows\tugaskampusposttest.deps.json
+C:\Users\user\source\repos\tugaskampusposttest\tugaskampusposttest\bin\Debug\net10.0-windows\tugaskampusposttest.runtimeconfig.json
+C:\Users\user\source\repos\tugaskampusposttest\tugaskampusposttest\bin\Debug\net10.0-windows\tugaskampusposttest.dll
+C:\Users\user\source\repos\tugaskampusposttest\tugaskampusposttest\bin\Debug\net10.0-windows\tugaskampusposttest.pdb
+C:\Users\user\source\repos\tugaskampusposttest\tugaskampusposttest\obj\Debug\net10.0-windows\tugaskampusposttest.Form1.resources
+C:\Users\user\source\repos\tugaskampusposttest\tugaskampusposttest\obj\Debug\net10.0-windows\tugaskampusposttest.csproj.GenerateResource.cache
+C:\Users\user\source\repos\tugaskampusposttest\tugaskampusposttest\obj\Debug\net10.0-windows\tugaskampusposttest.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\source\repos\tugaskampusposttest\tugaskampusposttest\obj\Debug\net10.0-windows\tugaskampusposttest.AssemblyInfoInputs.cache
+C:\Users\user\source\repos\tugaskampusposttest\tugaskampusposttest\obj\Debug\net10.0-windows\tugaskampusposttest.AssemblyInfo.cs
+C:\Users\user\source\repos\tugaskampusposttest\tugaskampusposttest\obj\Debug\net10.0-windows\tugaskampusposttest.csproj.CoreCompileInputs.cache
+C:\Users\user\source\repos\tugaskampusposttest\tugaskampusposttest\obj\Debug\net10.0-windows\tugaskampusposttest.dll
+C:\Users\user\source\repos\tugaskampusposttest\tugaskampusposttest\obj\Debug\net10.0-windows\refint\tugaskampusposttest.dll
+C:\Users\user\source\repos\tugaskampusposttest\tugaskampusposttest\obj\Debug\net10.0-windows\tugaskampusposttest.pdb
+C:\Users\user\source\repos\tugaskampusposttest\tugaskampusposttest\obj\Debug\net10.0-windows\tugaskampusposttest.genruntimeconfig.cache
+C:\Users\user\source\repos\tugaskampusposttest\tugaskampusposttest\obj\Debug\net10.0-windows\ref\tugaskampusposttest.dll
