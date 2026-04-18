@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 12, 2026 at 05:45 PM
+-- Generation Time: Apr 18, 2026 at 05:12 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `tabel_alutsista` (
   `id` varchar(50) NOT NULL,
   `nama` varchar(100) NOT NULL,
-  `jenis` varchar(50) NOT NULL,
+  `id_kategori` int(50) NOT NULL,
   `status` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -38,12 +38,13 @@ CREATE TABLE `tabel_alutsista` (
 -- Dumping data for table `tabel_alutsista`
 --
 
-INSERT INTO `tabel_alutsista` (`id`, `nama`, `jenis`, `status`) VALUES
-('V-002', 'Leopard 2A4', 'Tank', 'Maintenance'),
-('v-007', 'Leopard 2 ri', 'ifv', 'reserve'),
-('V-011', 'Harimau', 'Tank', 'Aktif'),
-('V-012', 'k21', 'Tank', 'Non-Aktif'),
-('V-021', 'Leopard2RI', 'Tank', 'Aktif');
+INSERT INTO `tabel_alutsista` (`id`, `nama`, `id_kategori`, `status`) VALUES
+('TS-011', 'F15', 4, 'Aktif'),
+('V-002', 'Leopard 2A4', 1, 'Maintenance'),
+('v-007', 'Leopard 2 ri', 1, 'reserve'),
+('V-011', 'Harimau', 1, 'Aktif'),
+('V-012', 'k21', 1, 'Non-Aktif'),
+('V-021', 'Leopard2RI', 1, 'Aktif');
 
 --
 -- Indexes for dumped tables

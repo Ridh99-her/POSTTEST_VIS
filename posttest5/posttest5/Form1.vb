@@ -1,114 +1,100 @@
 ﻿Imports MySql.Data.MySqlClient
 
 Public Class Form1
+    Dim conn As MySqlConnection
+    Dim cmd As MySqlCommand
+    Dim da As MySqlDataAdapter
+    Dim dt As DataTable
 
     Dim connString As String = "server=localhost;user id=root;password=;database=db_alutsista"
-    Dim conn As MySqlConnection
-    Dim dtAlutsista As New DataTable
-
-    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
-        cmbJenis.Items.Clear()
-        cmbJenis.Items.Add("Tank")
-        cmbJenis.Items.Add("Pesawat Tempur")
-        cmbJenis.Items.Add("Kapal Perang")
-        cmbJenis.Items.Add("Rudal")
 
 
-        cmbStatus.Items.Clear()
-        cmbStatus.Items.Add("Aktif")
-        cmbStatus.Items.Add("Maintenance")
-        cmbStatus.Items.Add("Non-Aktif")
+    Sub IsiComboKategori()
+        Try
+            conn = New MySqlConnection(connString)
+            Dim query As String = "SELECT id_kategori, nama_kategori FROM tabel_kategori"
+            da = New MySqlDataAdapter(query, conn)
+            Dim dtKategori As New DataTable
+            da.Fill(dtKategori)
 
-        TampilData()
+            cmbJenis.DataSource = dtKategori
+            cmbJenis.DisplayMember = "nama_kategori"
+            cmbJenis.ValueMember = "id_kategori"
+
+            cmbJenis.SelectedIndex = -1
+        Catch ex As Exception
+            MsgBox("Gagal Load Kategori: " & ex.Message)
+        End Try
     End Sub
+
 
     Sub TampilData()
         Try
             conn = New MySqlConnection(connString)
-            Dim da As New MySqlDataAdapter("SELECT * FROM tabel_alutsista", conn)
-            dtAlutsista = New DataTable
-            da.Fill(dtAlutsista)
 
-            dgvAlutsista.DataSource = dtAlutsista
+            Dim query As String = "SELECT a.id, a.nama, k.nama_kategori AS jenis, a.status " &
+                                 "FROM tabel_alutsista a " &
+                                 "INNER JOIN tabel_kategori k ON a.id_kategori = k.id_kategori"
 
-
-            UpdateDashboard()
+            da = New MySqlDataAdapter(query, conn)
+            dt = New DataTable
+            da.Fill(dt)
+            dgvData.DataSource = dt
         Catch ex As Exception
-            MessageBox.Show("Koneksi Gagal! Pastikan MySQL di XAMPP sudah RUNNING." & vbCrLf & "Error: " & ex.Message)
+
+            MsgBox("Gagal Tampil Data: " & ex.Message)
         End Try
     End Sub
 
-    Sub UpdateDashboard()
 
-        If dtAlutsista IsNot Nothing AndAlso dtAlutsista.Rows.Count > 0 Then
-            Dim total As Integer = dtAlutsista.Rows.Count
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        IsiComboKategori()
 
-            Dim jmlLeopard = dtAlutsista.Select("nama LIKE '%Leopard%'").Length
-            Dim jmlK2 = dtAlutsista.Select("nama LIKE '%K2%'").Length
 
-            lblTotal.Text = "TOTAL: " & total & " UNIT"
-            lblSummary.Text = "Leopard: " & jmlLeopard & vbCrLf & "K2 Black Panther: " & jmlK2
-        Else
-            lblTotal.Text = "TOTAL: 0 UNIT"
-            lblSummary.Text = "Leopard: 0" & vbCrLf & "K2 Black Panther: 0"
-        End If
+        cmbStatus.Items.Clear()
+        cmbStatus.Items.Add("Aktif")
+        cmbStatus.Items.Add("Cadangan")
+        cmbStatus.Items.Add("Perbaikan")
+
+        TampilData()
     End Sub
 
-    Sub ClearInput()
-        txtID.Clear()
-        txtNama.Clear()
-        cmbJenis.SelectedIndex = -1
-        cmbStatus.SelectedIndex = -1
-        txtID.Focus()
-    End Sub
 
     Private Sub btnSimpan_Click(sender As Object, e As EventArgs) Handles btnSimpan.Click
 
-        If txtID.Text = "" Or txtNama.Text = "" Or cmbJenis.Text = "" Or cmbStatus.Text = "" Then
-            MessageBox.Show("Mohon lengkapi semua data sebelum simpan!")
+        If txtID.Text = "" Or txtNama.Text = "" Or cmbJenis.SelectedIndex = -1 Then
+            MsgBox("Lengkapi data terlebih dahulu!")
             Exit Sub
         End If
 
         Try
             conn = New MySqlConnection(connString)
+            conn.Open()
 
-            Dim cmd As New MySqlCommand("INSERT INTO tabel_alutsista (id, nama, jenis, status) VALUES (@id, @nama, @jenis, @status)", conn)
 
+            Dim query As String = "INSERT INTO tabel_alutsista (id, nama, id_kategori, status) " &
+                                 "VALUES (@id, @nama, @kat, @status)"
+
+            cmd = New MySqlCommand(query, conn)
             cmd.Parameters.AddWithValue("@id", txtID.Text)
             cmd.Parameters.AddWithValue("@nama", txtNama.Text)
-            cmd.Parameters.AddWithValue("@jenis", cmbJenis.Text)
+            cmd.Parameters.AddWithValue("@kat", cmbJenis.SelectedValue) ' Mengirim angka ID
             cmd.Parameters.AddWithValue("@status", cmbStatus.Text)
 
-            conn.Open()
             cmd.ExecuteNonQuery()
-            conn.Close()
+            MsgBox("Data Berhasil Disimpan!")
 
+
+            txtID.Clear()
+            txtNama.Clear()
+            cmbJenis.SelectedIndex = -1
 
             TampilData()
-            ClearInput()
-            MessageBox.Show("Data Alutsista Berhasil Disimpan!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            conn.Close()
         Catch ex As Exception
-            MessageBox.Show("Gagal Simpan ke Database! Error: " & ex.Message)
+            MsgBox("Gagal Simpan: " & ex.Message)
         Finally
-
-            If conn.State = ConnectionState.Open Then conn.Close()
+            conn.Close()
         End Try
-    End Sub
-
-    Private Sub dgvAlutsista_CellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles dgvAlutsista.CellFormatting
-
-        If e.ColumnIndex = 3 AndAlso e.Value IsNot Nothing Then
-            Dim status As String = e.Value.ToString()
-            If status = "Aktif" Then
-                e.CellStyle.BackColor = Color.LightGreen
-                e.CellStyle.ForeColor = Color.Black
-            ElseIf status = "Maintenance" Then
-                e.CellStyle.BackColor = Color.Yellow
-                e.CellStyle.ForeColor = Color.Black
-            ElseIf status = "Non-Aktif" Then
-                e.CellStyle.BackColor = Color.LightPink
-            End If
-        End If
     End Sub
 End Class
